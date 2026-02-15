@@ -1,55 +1,177 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+🚀 Smart Bookmark App
 
-## Getting Started
+A full-stack bookmark management application built using Next.js (App Router) and Supabase.
 
-First, run the development server:
+This application allows users to authenticate with Google, manage personal bookmarks, and experience real-time updates — all deployed on Vercel.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+🔗 Live Demo
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-
-🌐 Live Demo
+Vercel URL: 
 smart-bookmark-app-nw52-git-main-11marys-projects.vercel.app
-smart-bookmark-app-nw52.vercel.app
 
-👩‍💻 Author
+🛠 Tech Stack
 
-Mary P
-Full Stack Developer
-Java | React | Supabase | REST APIs
+Frontend: Next.js (App Router)
 
-📌 Learning Outcomes
+Backend & Database: Supabase
 
-Implementing OAuth-based authentication
+Authentication: Google OAuth (Supabase Auth)
 
-Designing multi-user systems with Row-Level Security
+Database: PostgreSQL (Supabase)
 
-Handling real-time database updates
+Real-time Updates: Supabase Realtime
 
-Deploying full-stack applications to production
+Styling: Tailwind CSS
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Deployment: Vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+✅ Features Implemented
+
+🔐 Google OAuth login (No email/password)
+
+➕ Add bookmarks (Title + URL)
+
+✏️ Update bookmarks
+
+🗑 Delete bookmarks
+
+🔄 Real-time updates (auto refresh on changes)
+
+🔒 Row Level Security (Users can only access their own bookmarks)
+
+🌐 Production deployment on Vercel
+
+🧱 Database Design
+
+Table: bookmarks
+
+Column	Type
+uuid	UUID (PK)
+text	Text
+url	Text
+user_id	UUID
+
+RLS policies ensure:
+
+Users can insert only their own bookmarks
+
+Users can view only their own bookmarks
+
+Users can update only their own bookmarks
+
+Users can delete only their own bookmarks
+
+⚙️ Challenges Faced & How I Solved Them
+1️⃣ Supabase RLS Blocking CRUD Operations
+
+Initially, bookmarks were not inserting or fetching due to incorrect Row Level Security policies.
+
+Solution:
+
+Properly configured SELECT, INSERT, UPDATE, DELETE policies
+
+Used auth.uid() = user_id condition
+
+Tested with multiple accounts to verify isolation
+
+2️⃣ Google OAuth Redirect Issues (Production)
+
+After deployment, authentication failed due to incorrect redirect URLs.
+
+Solution:
+
+Added Vercel production URL in:
+
+Supabase → Authentication → URL Configuration
+
+Configured:
+
+Site URL
+
+Redirect URLs
+
+Ensured no localhost redirects were used in production
+
+3️⃣ Vercel Build Failure (Missing Environment Variables)
+
+Deployment initially failed with:
+
+Error: supabaseUrl is required
+
+
+Solution:
+
+Added required environment variables in Vercel:
+
+NEXT_PUBLIC_SUPABASE_URL
+
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+Redeployed successfully
+
+4️⃣ Real-Time Updates Not Working
+
+Real-time updates did not trigger initially.
+
+Solution:
+
+Subscribed to Supabase postgres_changes
+
+Refetched bookmarks on change event
+
+Cleaned up subscription on unmount
+
+🔐 Security Implementation
+
+Row Level Security enabled
+
+All operations restricted to authenticated users
+
+User-based filtering using auth.uid()
+
+No sensitive keys exposed
+
+🚀 How to Run Locally
+
+Clone the repository
+
+Install dependencies:
+
+npm install
+
+
+Create .env.local:
+
+NEXT_PUBLIC_SUPABASE_URL=your_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_key
+
+
+Run:
+
+npm run dev
+
+💡 What I Learned
+
+Proper handling of authentication flows
+
+Importance of secure RLS configuration
+
+Managing production environment variables
+
+Debugging OAuth and deployment issues
+
+Integrating real-time subscriptions with UI
+
+📌 Final Notes
+
+This project focuses on:
+
+Clean architecture
+
+Secure access control
+
+Production-ready deployment
+
+Real-world debugging experience
+
+✨ Thank you for reviewing my submission!
